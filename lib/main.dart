@@ -27,6 +27,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var arr = new List(5);
+  var arrno = new List(5);
 
 List<Question> _items = [
     Question(
@@ -35,13 +36,23 @@ List<Question> _items = [
       title: 'whats your name?',
     ),
     Question(
-      idy: 'y1',
-      idn: 'n1',
+      idy: 'y2',
+      idn: 'n2',
       title: 'which food you like most?',
     ),
     Question(
-      idy: 'y1',
-      idn: 'n1',
+      idy: 'y3',
+      idn: 'n3',
+      title: 'Where you want to go?',
+    ),
+    Question(
+      idy: 'y4',
+      idn: 'n4',
+      title: 'Where you want to go?',
+    ),
+    Question(
+      idy: 'y5',
+      idn: 'n5',
       title: 'Where you want to go?',
     ),
   ];
@@ -67,11 +78,14 @@ List<Question> _items = [
   }
 
   void pressedyes(data){
-
       this.arr.add(data);
       print(this.arr);
   }
 
+  void pressedno(data){
+      this.arr.add(data);
+      print(this.arr);
+  }
 
   @override
 
