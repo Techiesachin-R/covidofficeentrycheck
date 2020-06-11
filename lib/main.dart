@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
         //primaryColor: const Color(0xFF2E3D98),
         primarySwatch: Colors.lightBlue,
       ),
-      home: MyHomePage(title: 'Sample'),
+      home: MyHomePage(title: 'OT Covid Self Assessment'),
     );
   }
 }
@@ -166,21 +167,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       return Card(
                         //color: Color.fromARGB(1, 126, 146, 159),
                         child: Container(
+                          alignment: Alignment.center,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Expanded(
-                                flex: 7,
+                                flex: 6,
                                 child: Container(
                                     padding: EdgeInsets.all(15.0),
                                     child: Text(
                                       '${_items[index].title}',
-                                      style: TextStyle(fontSize: 20.0),
+                                      style: TextStyle(fontSize: 18.0),
                                     )),
                               ),
                               Expanded(
-                                flex: 3,
+                                flex: 4,
                                 child: Container(
                                   child: ButtonBar(
                                     children: <Widget>[
@@ -218,16 +220,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     }),
               ),
-              FlatButton(
+              RaisedButton(
+                shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(color: Colors.blue)),
+                elevation: 10,
                 color: Color(0xFF2E3D98),
                 onPressed: () {
                   submit();
                 },
                 child: Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                  'SUBMIT',
+                  style: TextStyle(fontSize: 20.0, color: Colors.white, letterSpacing: 2.0),
                 ),
-              )
+              ),
+              SizedBox(height: 20,)
             ],
           ),
         ));

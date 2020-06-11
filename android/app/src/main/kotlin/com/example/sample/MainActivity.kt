@@ -1,4 +1,4 @@
-package com.example.sample
+package info.pillisureshraju.covidselfassessment
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
