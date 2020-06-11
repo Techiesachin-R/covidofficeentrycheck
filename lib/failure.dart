@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 
-
 class Failure extends StatelessWidget {
   const Failure({Key key}) : super(key: key);
 
@@ -9,16 +8,16 @@ class Failure extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                'assets/logo.png',
-                width: 120.0,
-              ),
-            ],
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/logo.png',
+              width: 120.0,
+            ),
+          ],
         ),
+      ),
       body: Container(
         color: Colors.white,
         child: Center(
@@ -27,7 +26,8 @@ class Failure extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-             formatDate(DateTime.now(), [dd, '-', MM, '-', yyyy, ' ', hh, ':', nn, ':', ss, ' ', am]),
+              formatDate(DateTime.now(),
+                  [dd, '-', MM, '-', yyyy, ' ', hh, ':', nn, ':', ss, ' ', am]),
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 20.0, color: Colors.green, letterSpacing: 2.0),

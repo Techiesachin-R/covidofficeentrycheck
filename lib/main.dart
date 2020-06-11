@@ -9,14 +9,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          //primaryColor: const Color(0xFF2E3D98),
-          primarySwatch: Colors.lightBlue,
-        ),
-        home: MyHomePage(title: 'OT Covid Self Assessment'),
-        // home: Failure()
-        );
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        //primaryColor: const Color(0xFF2E3D98),
+        primarySwatch: Colors.lightBlue,
+      ),
+      home: MyHomePage(title: 'OT Covid Self Assessment'),
+      // home: Failure()
+    );
   }
 }
 
