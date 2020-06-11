@@ -31,51 +31,43 @@ class _MyHomePageState extends State<MyHomePage> {
 
 List<Question> _items = [
     Question(
-      idy: 'y1',
-      idn: 'n1',
+      id: 'y1',
       title: 'whats your name?',
     ),
     Question(
-      idy: 'y2',
-      idn: 'n2',
+      id: 'y2',
       title: 'which food you like most?',
     ),
     Question(
-      idy: 'y3',
-      idn: 'n3',
+      id: 'y3',
       title: 'Where you want to go?',
     ),
     Question(
-      idy: 'y4',
-      idn: 'n4',
-      title: 'Where you want to go?',
+      id: 'y4',
+      title: 'Where you want to sdsd?',
     ),
     Question(
-      idy: 'y5',
-      idn: 'n5',
+      id: 'y5',
       title: 'Where you want to go?',
     ),
   ];
 
 
-  int _yes = 0;
-  int _no= 0;
-  bool pressAttention = true;
 
 
-  void _incrementyesCounter() {
-    setState(() {
-      _yes ++;
-      this.pressAttention = false;
-      this.arr.add('yes');
-    });
-  }
+  // void _incrementyesCounter() {
+  //   setState(() {
+  //     _yes ++;
+  //     this.pressAttention = false;
+  //     this.arr.add('yes');
+  //   });
+  // }
 
-  void _incrementnoCounter() {
-    setState(() {
-      _no ++;
-    });
-  }
+  // void _incrementnoCounter() {
+  //   setState(() {
+  //     _no ++;
+  //   });
+  // }
 
   void pressedyes(data){
       this.arr.add(data);
@@ -88,50 +80,6 @@ List<Question> _items = [
   }
 
   @override
-
-  Widget _qiestioncard(){
-    return  Card(
-              child: Container(
-                color: const Color(0x2e3d9800),
-                child: Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text('What your task today ?',
-                      style: TextStyle(
-                        fontSize: 20.0
-                      ),)),
-                    Container(
-                      child: ButtonBar(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.thumb_up,
-                            ),
-                            iconSize: 30,
-                            color: pressAttention ? Colors.grey : Colors.blue,
-                            onPressed: _incrementyesCounter,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.thumb_down,
-                            ),
-                            iconSize: 30,
-                            color:Colors.grey,
-                            onPressed: _incrementnoCounter,
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -163,9 +111,9 @@ List<Question> _items = [
                               Icons.thumb_up,
                             ),
                             iconSize: 30,
-                            color: pressAttention ? Colors.grey : Colors.blue,
+                            color: Colors.grey,
                             onPressed: (){
-                              pressedyes(_items[index].idy);
+                              pressedyes(_items[index].id);
                             },
                           ),
                           IconButton(
@@ -174,9 +122,10 @@ List<Question> _items = [
                             ),
                             iconSize: 30,
                             color:Colors.grey,
-                            onPressed: _incrementnoCounter,
+                            onPressed: (){
+                              pressedno(_items[index].id);
+                            },
                           ),
-
                         ],
                       ),
                     ),
@@ -196,14 +145,12 @@ List<Question> _items = [
 
 
 class Question {
-  final String idy;
-  final String idn;
+  final String id;
   final String title;
 
 
   Question({
-    @required this.idy,
-    @required this.idn,
+    @required this.id,
     @required this.title,
   });
 }
