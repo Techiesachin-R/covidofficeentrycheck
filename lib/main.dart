@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -31,35 +29,36 @@ class _MyHomePageState extends State<MyHomePage> {
   List yesarray = <String>[];
   List noarray = <String>[];
   bool pressAttention = false;
+  bool hityes = false;
   List<Question> _items = [
     Question(
       id: 1,
-      title: 'whats your name?',
+      title: 'I am not sick',
       upclick:false,
       downclick:false
     ),
     Question(
       id: 2,
-      title: 'which food you like most?',
+      title: 'I do not have flu like symptoms',
             upclick:false,
       downclick:false
     ),
     Question(
       id: 3,
-      title: 'Where you want to go?',
+      title: 'I have not been exposed to COVID-19',
             upclick:false,
       downclick:false
     ),
     Question(
       id: 4,
-      title: 'Where you want to sdsd?',
+      title: 'I do not have high temparature',
             upclick:false,
       downclick:false
     ),
     Question(
       id: 5,
-      title: 'Where you want to go?',
-      upclick:true,
+      title: 'I have a face mask',
+      upclick:false,
       downclick:false
     ),
   ];
@@ -68,9 +67,21 @@ class _MyHomePageState extends State<MyHomePage> {
     if (this.noarray.contains(data.toString())) {
       this.noarray.remove(data.toString());
       this.yesarray.add(data.toString());
+      setState(() {
+        if (_items[data-1].downclick) {
+          _items[data-1].downclick = false;
+        }
+        _items[data-1].upclick = !_items[data-1].upclick;
+      });
       this.yesarray.toSet();
     } else {
       this.yesarray.add(data.toString());
+      setState(() {
+        if (_items[data-1].downclick) {
+          _items[data-1].downclick = false;
+        }
+        _items[data-1].upclick = !_items[data-1].upclick;
+      });
       this.yesarray.toSet();
     }
     print('yesarray:  + ${this.yesarray.toSet()}');
@@ -82,56 +93,65 @@ class _MyHomePageState extends State<MyHomePage> {
     if (this.yesarray.contains(data.toString())) {
       this.yesarray.remove(data.toString());
       this.noarray.add(data.toString());
+      setState(() {
+        if (_items[data-1].upclick) {
+          _items[data-1].upclick = false;
+        }
+        _items[data-1].downclick = !_items[data-1].downclick;
+      });
       this.noarray.toSet();
     } else {
       this.noarray.add(data.toString());
+      setState(() {
+        if (_items[data-1].upclick) {
+          _items[data-1].upclick = false;
+        }
+        _items[data-1].downclick = !_items[data-1].downclick;
+      });
       this.noarray.toSet();
     }
     print('yesarray:  + ${this.yesarray.toSet()}');
     print('noarray:  + ${this.noarray.toSet()}');
   }
 
-  //Todo ENABLE SUBMIT BUTTON BASED ON CONDITION ALL FILLED 
-  void submit(){
+  //Todo ENABLE SUBMIT BUTTON BASED ON CONDITION ALL FILLED
 
 
-      if(this.yesarray.length == 5){
-        print('object');
-        _showMyDialog(yesarray.toSet().length.toString());
+void submit() {
+      if(this.yesarray.toSet().length == 5){
+        _showMyDialog('You are welcome to office!!');
       }else{
-         _showMyDialog(yesarray.toSet().length.toString());
-        print('sdfsd');
+         _showMyDialog('Please stay safe at home!!');
       }
       //Todo empty arrays and object and refresh 
   }
 
   Future<void> _showMyDialog(response) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('You are In'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(response),
-            ],
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Entry Status'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(response),
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Okay'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Okay'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               new Expanded(
-                    child: ListView.builder(
+                child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     primary: true,
                     itemCount: _items.length,
@@ -175,13 +195,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Icons.thumb_up,
                                       ),
                                       iconSize: 30,
-                                      //color: 'pressAttention-${_items[index].id.toString()}' ? Colors.grey : Colors.blue,
-                                      color: Colors.grey,
+                                      color: _items[index].upclick
+                                          ? Colors.blue
+                                          : Colors.grey,
                                       onPressed: () {
                                         pressedyes(_items[index].id);
-                                        setState(() {
-                                          
-                                        });
+                                        // setState(() {
+                                        //    if(_items[index].downclick){
+                                        //     _items[index].downclick = false;
+                                        //  }
+                                        //    _items[index].upclick = !_items[index].upclick;
+                                        // });
                                       },
                                     ),
                                     IconButton(
@@ -189,9 +213,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Icons.thumb_down,
                                       ),
                                       iconSize: 30,
-                                      color: Colors.grey,
+                                      color: _items[index].downclick
+                                          ? Colors.red
+                                          : Colors.grey,
                                       onPressed: () {
                                         pressedno(_items[index].id);
+                                        // setState(() {
+                                        //   if (_items[index].upclick) {
+                                        //     _items[index].upclick = false;
+                                        //   }
+                                        //   _items[index].downclick = !_items[index].downclick;
+                                        // });
                                       },
                                     ),
                                   ],
@@ -204,17 +236,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     }),
               ),
               FlatButton(
-              color: Colors.blue,
-                onPressed: (){
-                      submit();
+                color: Colors.blue,
+                onPressed: () {
+                  submit();
                 },
-                child: Text('Submit',
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.white
-              ),
-              
-              ),
+                child: Text(
+                  'Submit',
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                ),
               )
             ],
           ),
@@ -225,8 +254,8 @@ class _MyHomePageState extends State<MyHomePage> {
 class Question {
   final int id;
   final String title;
-  final bool upclick;
-  final bool downclick;
+  bool upclick;
+  bool downclick;
 
   Question({
     @required this.id,
