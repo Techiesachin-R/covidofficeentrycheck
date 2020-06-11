@@ -31,36 +31,24 @@ class _MyHomePageState extends State<MyHomePage> {
   bool pressAttention = false;
   bool hityes = false;
   List<Question> _items = [
+    Question(id: 1, title: 'I am not sick', upclick: false, downclick: false),
     Question(
-      id: 1,
-      title: 'I am not sick',
-      upclick:false,
-      downclick:false
-    ),
+        id: 2,
+        title: 'I do not have flu like symptoms',
+        upclick: false,
+        downclick: false),
     Question(
-      id: 2,
-      title: 'I do not have flu like symptoms',
-            upclick:false,
-      downclick:false
-    ),
+        id: 3,
+        title: 'I have not been exposed to COVID-19',
+        upclick: false,
+        downclick: false),
     Question(
-      id: 3,
-      title: 'I have not been exposed to COVID-19',
-            upclick:false,
-      downclick:false
-    ),
+        id: 4,
+        title: 'I do not have high temparature',
+        upclick: false,
+        downclick: false),
     Question(
-      id: 4,
-      title: 'I do not have high temparature',
-            upclick:false,
-      downclick:false
-    ),
-    Question(
-      id: 5,
-      title: 'I have a face mask',
-      upclick:false,
-      downclick:false
-    ),
+        id: 5, title: 'I have a face mask', upclick: false, downclick: false),
   ];
 
   void pressedyes(data) {
@@ -68,19 +56,19 @@ class _MyHomePageState extends State<MyHomePage> {
       this.noarray.remove(data.toString());
       this.yesarray.add(data.toString());
       setState(() {
-        if (_items[data-1].downclick) {
-          _items[data-1].downclick = false;
+        if (_items[data - 1].downclick) {
+          _items[data - 1].downclick = false;
         }
-        _items[data-1].upclick = !_items[data-1].upclick;
+        _items[data - 1].upclick = !_items[data - 1].upclick;
       });
       this.yesarray.toSet();
     } else {
       this.yesarray.add(data.toString());
       setState(() {
-        if (_items[data-1].downclick) {
-          _items[data-1].downclick = false;
+        if (_items[data - 1].downclick) {
+          _items[data - 1].downclick = false;
         }
-        _items[data-1].upclick = !_items[data-1].upclick;
+        _items[data - 1].upclick = !_items[data - 1].upclick;
       });
       this.yesarray.toSet();
     }
@@ -94,19 +82,19 @@ class _MyHomePageState extends State<MyHomePage> {
       this.yesarray.remove(data.toString());
       this.noarray.add(data.toString());
       setState(() {
-        if (_items[data-1].upclick) {
-          _items[data-1].upclick = false;
+        if (_items[data - 1].upclick) {
+          _items[data - 1].upclick = false;
         }
-        _items[data-1].downclick = !_items[data-1].downclick;
+        _items[data - 1].downclick = !_items[data - 1].downclick;
       });
       this.noarray.toSet();
     } else {
       this.noarray.add(data.toString());
       setState(() {
-        if (_items[data-1].upclick) {
-          _items[data-1].upclick = false;
+        if (_items[data - 1].upclick) {
+          _items[data - 1].upclick = false;
         }
-        _items[data-1].downclick = !_items[data-1].downclick;
+        _items[data - 1].downclick = !_items[data - 1].downclick;
       });
       this.noarray.toSet();
     }
@@ -116,14 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //Todo ENABLE SUBMIT BUTTON BASED ON CONDITION ALL FILLED
 
-
-void submit() {
-      if(this.yesarray.toSet().length == 5){
-        _showMyDialog('You are welcome to office!!');
-      }else{
-         _showMyDialog('Please stay safe at home!!');
-      }
-      //Todo empty arrays and object and refresh 
+  void submit() {
+    if (this.yesarray.toSet().length == 5) {
+      _showMyDialog('You are welcome to office!!');
+    } else {
+      _showMyDialog('Please stay safe at home!!');
+    }
+    //Todo empty arrays and object and refresh
   }
 
   Future<void> _showMyDialog(response) async {
@@ -181,52 +168,46 @@ void submit() {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                  padding: EdgeInsets.all(15.0),
-                                  child: Text(
-                                    '${_items[index].title}',
-                                    style: TextStyle(fontSize: 20.0),
-                                  )),
-                              Container(
-                                child: ButtonBar(
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.thumb_up,
+                              Expanded(
+                                flex: 7,
+                                child: Container(
+                                    padding: EdgeInsets.all(15.0),
+                                    child: Text(
+                                      '${_items[index].title}',
+                                      style: TextStyle(fontSize: 20.0),
+                                    )),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  child: ButtonBar(
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.thumb_up,
+                                        ),
+                                        iconSize: 30,
+                                        color: _items[index].upclick
+                                            ? Colors.blue
+                                            : Colors.grey,
+                                        onPressed: () {
+                                          pressedyes(_items[index].id);
+                                        },
                                       ),
-                                      iconSize: 30,
-                                      color: _items[index].upclick
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                      onPressed: () {
-                                        pressedyes(_items[index].id);
-                                        // setState(() {
-                                        //    if(_items[index].downclick){
-                                        //     _items[index].downclick = false;
-                                        //  }
-                                        //    _items[index].upclick = !_items[index].upclick;
-                                        // });
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.thumb_down,
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.thumb_down,
+                                        ),
+                                        iconSize: 30,
+                                        color: _items[index].downclick
+                                            ? Colors.red
+                                            : Colors.grey,
+                                        onPressed: () {
+                                          pressedno(_items[index].id);
+                                        },
                                       ),
-                                      iconSize: 30,
-                                      color: _items[index].downclick
-                                          ? Colors.red
-                                          : Colors.grey,
-                                      onPressed: () {
-                                        pressedno(_items[index].id);
-                                        // setState(() {
-                                        //   if (_items[index].upclick) {
-                                        //     _items[index].upclick = false;
-                                        //   }
-                                        //   _items[index].downclick = !_items[index].downclick;
-                                        // });
-                                      },
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
