@@ -9,7 +9,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primaryColor: const Color(0xFF2E3D98),
+        primarySwatch: Colors.lightBlue,
       ),
       home: MyHomePage(title: 'Sample'),
     );
@@ -163,6 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemCount: _items.length,
                     itemBuilder: (context, index) {
                       return Card(
+                        //color: Color.fromARGB(1, 126, 146, 159),
                         child: Container(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     }),
               ),
               FlatButton(
-                color: Colors.blue,
+                color: Color(0xFF2E3D98),
                 onPressed: () {
                   submit();
                 },
