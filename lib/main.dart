@@ -1,4 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:covidselfassessment/failure.dart';
+import 'package:covidselfassessment/success.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -8,13 +9,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        //primaryColor: const Color(0xFF2E3D98),
-        primarySwatch: Colors.lightBlue,
-      ),
-      home: MyHomePage(title: 'OT Covid Self Assessment'),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          //primaryColor: const Color(0xFF2E3D98),
+          primarySwatch: Colors.lightBlue,
+        ),
+        home: MyHomePage(title: 'OT Covid Self Assessment'),
+        // home: Failure()
+        );
   }
 }
 
@@ -108,9 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void submit() {
     if (this.yesarray.toSet().length == 5) {
-      _showMyDialog('You are welcome to office!!');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Success()),
+      );
     } else {
-      _showMyDialog('Please stay safe at home!!');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Failure()),
+      );
     }
     //Todo empty arrays and object and refresh
   }
@@ -146,18 +154,32 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Image.asset(
-            'assets/logo.png',
-            fit: BoxFit.cover,
-            width: 120.0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/logo.png',
+                fit: BoxFit.cover,
+                width: 120.0,
+              ),
+            ],
           ),
         ),
         body: Container(
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
           color: const Color(0x111B5800),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(15.0),
+                child: Text(
+                  "Self-declaration",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+              ),
               new Expanded(
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
@@ -165,53 +187,54 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemCount: _items.length,
                     itemBuilder: (context, index) {
                       return Card(
-                        //color: Color.fromARGB(1, 126, 146, 159),
+                        color: Color(0xFFF3F6FB),
                         child: Container(
                           alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Expanded(
-                                flex: 6,
-                                child: Container(
-                                    padding: EdgeInsets.all(15.0),
-                                    child: Text(
-                                      '${_items[index].title}',
-                                      style: TextStyle(fontSize: 18.0),
-                                    )),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: Container(
-                                  child: ButtonBar(
-                                    children: <Widget>[
-                                      IconButton(
-                                        icon: Icon(
-                                          Icons.thumb_up,
+                              Container(
+                                  padding:
+                                      EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                  child: Text(
+                                    '${_items[index].title}',
+                                    style: TextStyle(fontSize: 18.0),
+                                  )),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    ButtonBar(
+                                      children: <Widget>[
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.thumb_up,
+                                          ),
+                                          iconSize: 20,
+                                          color: _items[index].upclick
+                                              ? Color(0xFF2E3D98)
+                                              : Colors.grey,
+                                          onPressed: () {
+                                            pressedyes(_items[index].id);
+                                          },
                                         ),
-                                        iconSize: 30,
-                                        color: _items[index].upclick
-                                            ? Colors.blue
-                                            : Colors.grey,
-                                        onPressed: () {
-                                          pressedyes(_items[index].id);
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: Icon(
-                                          Icons.thumb_down,
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.thumb_down,
+                                          ),
+                                          iconSize: 20,
+                                          color: _items[index].downclick
+                                              ? Color(0xFFDF3324)
+                                              : Colors.grey,
+                                          onPressed: () {
+                                            pressedno(_items[index].id);
+                                          },
                                         ),
-                                        iconSize: 30,
-                                        color: _items[index].downclick
-                                            ? Colors.red
-                                            : Colors.grey,
-                                        onPressed: () {
-                                          pressedno(_items[index].id);
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -222,8 +245,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RaisedButton(
                 shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: BorderSide(color: Colors.blue)),
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: Colors.blue)),
                 elevation: 10,
                 color: Color(0xFF2E3D98),
                 onPressed: () {
@@ -231,10 +254,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text(
                   'SUBMIT',
-                  style: TextStyle(fontSize: 20.0, color: Colors.white, letterSpacing: 2.0),
+                  style: TextStyle(
+                      fontSize: 20.0, color: Colors.white, letterSpacing: 2.0),
                 ),
               ),
-              SizedBox(height: 20,)
+              SizedBox(
+                height: 10,
+              )
             ],
           ),
         ));
