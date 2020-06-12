@@ -17,7 +17,7 @@ class Success extends StatelessWidget {
             Image.asset(
               'assets/logo_black.png',
               fit: BoxFit.scaleDown,
-              width: 135.0,
+              width: 130.0,
               height: 50.0,
             ),
           ],
@@ -51,7 +51,7 @@ class Success extends StatelessWidget {
             Wrap(direction: Axis.vertical, //Vertical || Horizontal
                 children: <Widget>[
                   Text(
-                    'You may enter the \noffice.',
+                    'You may enter the \noffice',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 28.0,

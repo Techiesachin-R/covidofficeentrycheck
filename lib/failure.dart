@@ -16,7 +16,7 @@ class Failure extends StatelessWidget {
             Image.asset(
               'assets/logo_black.png',
               fit: BoxFit.scaleDown,
-              width: 135.0,
+              width: 130.0,
               height: 50.0,
             ),
           ],

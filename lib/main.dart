@@ -14,102 +14,89 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        //primaryColor: const Color(0xFF2E3D98),
-        primarySwatch: Colors.lightBlue,
-      ),
-      home: MyHomePage(title: 'Covid Self Declaration'),
+      home: MyHomePage(),
       routes: {
         "/success": (_) => new Success(),
         "/failed": (_) => new Failure(),
       },
-      // home: Failure()
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Set yesarray = new HashSet<String>();
-  Set noarray = new HashSet<String>();
+  // List of questions
+  List<String> questions = [
+    'I do not have flu like symptoms',
+    'I do not have a temparature',
+    'I have not been exposed to COVID-19',
+    'I believe I am not sick and can enter the office'
+  ];
+  List<Question> _items = new List<Question>();
+
+  Set yesarray = new HashSet<int>();
+  Set noarray = new HashSet<int>();
   bool isAllItemsFilled = false;
 
-  List<Question> _items = [
-    Question(
-        id: 1,
-        title: 'I do not have flu like symptoms',
-        upclick: false,
-        downclick: false),
-    Question(
-        id: 2,
-        title: 'I do not have a temparature',
-        upclick: false,
-        downclick: false),
-    Question(
-        id: 3,
-        title: 'I have not been exposed to COVID-19',
-        upclick: false,
-        downclick: false),
-    Question(
-        id: 4,
-        title: 'I believe I am not sick and can enter the office',
-        upclick: false,
-        downclick: false),
-  ];
+  // Static images
+  static Image likeIconUnselected = Image.asset('assets/like.png');
+  static Image likeIconSelected = Image.asset('assets/like_selected.png');
+  static Image dislikeIconUnselected = Image.asset('assets/dislike.png');
+  static Image dislikeIconSelected = Image.asset('assets/dislike_selected.png');
 
-  void pressedyes(data) {
-    if (this.noarray.contains(data.toString())) {
-      this.noarray.remove(data.toString());
+  AssetImage appbarBG = AssetImage('assets/appbar_bg.png');
+  Image appbarLogo = Image.asset(
+    'assets/logo_white.png',
+    fit: BoxFit.scaleDown,
+    width: 130.0,
+    height: 50.0,
+  );
+
+  // Default image assignment
+  Image likeIcon = likeIconUnselected;
+  Image dislikeIcon = dislikeIconUnselected;
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Additional initialization of the State
+    for (int i = 0; i < questions.length; i++) {
+      _items.add(new Question(i, questions[i]));
     }
-    setState(() {
-      if (_items[data - 1].downclick) {
-        _items[data - 1].downclick = false;
-      }
-
-      if (!_items[data - 1].upclick) {
-        this.yesarray.add(data.toString());
-      } else {
-        this.yesarray.remove(data.toString());
-      }
-
-      _items[data - 1].upclick = !_items[data - 1].upclick;
-      if ((this.yesarray.length + this.noarray.length) == _items.length) {
-        isAllItemsFilled = true;
-      } else {
-        isAllItemsFilled = false;
-      }
-    });
-    // this.yesarray.toSet();
-
-    debugPrint('yesarray:  + ${this.yesarray}');
-    debugPrint('noarray:  + ${this.noarray}');
   }
 
-  void pressedno(data) {
-    if (this.yesarray.contains(data.toString())) {
-      this.yesarray.remove(data.toString());
-    }
+  /*
+    upVote - up vote function
+    index - The index of the question
+  */
+  void upVote(index) {
     setState(() {
-      if (_items[data - 1].upclick) {
-        _items[data - 1].upclick = false;
+      if (this.noarray.contains(index)) {
+        this.noarray.remove(index);
+        _items[index].dislikeIcon = dislikeIconUnselected;
       }
 
-      if (!_items[data - 1].downclick) {
-        this.noarray.add(data.toString());
+      if (_items[index].downclick) {
+        _items[index].downclick = false;
+      }
+
+      if (!_items[index].upclick) {
+        this.yesarray.add(index);
+        _items[index].likeIcon = likeIconSelected;
       } else {
-        this.noarray.remove(data.toString());
+        this.yesarray.remove(index);
+        _items[index].likeIcon = likeIconUnselected;
       }
 
-      _items[data - 1].downclick = !_items[data - 1].downclick;
+      _items[index].upclick = !_items[index].upclick;
+
       if ((this.yesarray.length + this.noarray.length) == _items.length) {
         isAllItemsFilled = true;
       } else {
@@ -121,6 +108,45 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint('noarray:  + ${this.noarray}');
   }
 
+  /*
+    downVote - down vote function
+    index - The index of the question
+   */
+  void downVote(index) {
+    setState(() {
+      if (this.yesarray.contains(index)) {
+        this.yesarray.remove(index);
+        _items[index].likeIcon = likeIconUnselected;
+      }
+
+      if (_items[index].upclick) {
+        _items[index].upclick = false;
+      }
+
+      if (!_items[index].downclick) {
+        this.noarray.add(index);
+        _items[index].dislikeIcon = dislikeIconSelected;
+      } else {
+        this.noarray.remove(index);
+        _items[index].dislikeIcon = dislikeIconUnselected;
+      }
+
+      _items[index].downclick = !_items[index].downclick;
+
+      if ((this.yesarray.length + this.noarray.length) == _items.length) {
+        isAllItemsFilled = true;
+      } else {
+        isAllItemsFilled = false;
+      }
+    });
+
+    debugPrint('yesarray:  + ${this.yesarray}');
+    debugPrint('noarray:  + ${this.noarray}');
+  }
+
+  /*
+    submit function
+   */
   void submit() {
     if (this.yesarray.length + this.noarray.length < _items.length) {
       debugPrint('Fill all the declaration items');
@@ -135,28 +161,46 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Strings
+    final String appTitle = "Self-declaration";
+    final String submitText = "Submit";
+
+    // Colors
+    final Color cardBGcolor = Color(0xFFF3F6FB);
+    final Color bodyBGcolor = Color(0xFFFFFFFF);
+    final Color submitTextColor = Color(0xFFFFFFFF);
+    final Color submitDisabledBGcolor = Color(0xFF999999);
+    final Color submitEnabledBGcolor = Color(0xFF2E3D98);
+
+    // Font Size
+    final double submitTextFontSize = 16.0;
+    final double likeDislikeIconSize = 18.0;
+
+    // TextStyles
+    final TextStyle questionTextStyle = TextStyle(fontSize: 15.0);
+    final TextStyle submitTextStyle = TextStyle(
+        fontSize: submitTextFontSize,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+        color: submitTextColor,
+        letterSpacing: 1.0);
+
     return Scaffold(
         appBar: AppBar(
           flexibleSpace: Image(
-            image: AssetImage('assets/appbar_bg.png'),
+            image: appbarBG,
             fit: BoxFit.cover,
           ),
           backgroundColor: Colors.transparent,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                'assets/logo_white.png',
-                fit: BoxFit.scaleDown,
-                width: 135.0,
-                height: 50.0,
-              ),
-            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[appbarLogo],
           ),
         ),
         body: Container(
-          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
-          color: const Color(0x111B5800),
+          padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0),
+          color: bodyBGcolor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -164,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 padding: EdgeInsets.all(15.0),
                 child: Text(
-                  "Self-declaration",
+                  appTitle,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
@@ -175,8 +219,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     primary: true,
                     itemCount: _items.length,
                     itemBuilder: (context, index) {
+                      IconButton likeIconButton = IconButton(
+                        icon: (_items[index].likeIcon),
+                        iconSize: likeDislikeIconSize,
+                        onPressed: () {
+                          upVote(_items[index].id);
+                        },
+                      );
+
+                      IconButton dislikeIconButton = IconButton(
+                        icon: (_items[index].dislikeIcon),
+                        iconSize: likeDislikeIconSize,
+                        onPressed: () {
+                          downVote(_items[index].id);
+                        },
+                      );
+
                       return Card(
-                        color: Color(0xFFF3F6FB),
+                        color: cardBGcolor,
                         child: Container(
                           alignment: Alignment.center,
                           child: Column(
@@ -188,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       15.0, 10.0, 10.0, 0.0),
                                   child: Text(
                                     '${_items[index].title}',
-                                    style: TextStyle(fontSize: 15.0),
+                                    style: questionTextStyle,
                                   )),
                               Container(
                                 child: Row(
@@ -197,30 +257,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: <Widget>[
                                     ButtonBar(
                                       children: <Widget>[
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.thumb_up,
-                                          ),
-                                          iconSize: 18,
-                                          color: _items[index].upclick
-                                              ? Color(0xFF2E3D98)
-                                              : Colors.grey,
-                                          onPressed: () {
-                                            pressedyes(_items[index].id);
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.thumb_down,
-                                          ),
-                                          iconSize: 18,
-                                          color: _items[index].downclick
-                                              ? Color(0xFFDF3324)
-                                              : Colors.grey,
-                                          onPressed: () {
-                                            pressedno(_items[index].id);
-                                          },
-                                        ),
+                                        likeIconButton,
+                                        dislikeIconButton,
                                       ],
                                     ),
                                   ],
@@ -240,19 +278,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   elevation: 10,
-                  color:
-                      isAllItemsFilled ? Color(0xFF2E3D98) : Color(0xFF999999),
+                  color: isAllItemsFilled
+                      ? submitEnabledBGcolor
+                      : submitDisabledBGcolor,
                   onPressed: () {
-                    isAllItemsFilled ? submit() : null;
+                    if (isAllItemsFilled) {
+                      submit();
+                    }
                   },
                   child: Text(
-                    'Submit',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white,
-                        letterSpacing: 1.0),
+                    submitText,
+                    style: submitTextStyle,
                   ),
                 ),
               ),
@@ -263,18 +299,31 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ));
   }
+
+  @override
+ void dispose(){
+  // Additional disposal code
+  _items.clear();
+  super.dispose();
+ }
 }
 
+// Question class
 class Question {
-  final int id;
-  final String title;
+  int id;
+  String title;
   bool upclick;
   bool downclick;
+  Image likeIcon;
+  Image dislikeIcon;
 
-  Question({
-    @required this.id,
-    @required this.title,
-    @required this.upclick,
-    @required this.downclick,
-  });
+  // Question Constuctor with two arguments
+  Question(int id, String title) {
+    this.id = id;
+    this.title = title;
+    this.upclick = false;
+    this.downclick = false;
+    this.likeIcon = Image.asset('assets/like.png');
+    this.dislikeIcon = Image.asset('assets/dislike.png');
+  }
 }
