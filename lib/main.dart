@@ -162,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // Strings
-    final String appTitle = "Self-declaration";
+    final String declarationHeading = "Self-declaration";
     final String submitText = "Submit";
 
     // Colors
@@ -202,77 +202,86 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0),
           color: bodyBGcolor,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            // mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              // Declaration Heading
               Container(
-                padding: EdgeInsets.all(15.0),
+                margin: EdgeInsets.all(15.0),
                 child: Text(
-                  appTitle,
+                  declarationHeading,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
               ),
-              new Expanded(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    primary: true,
-                    itemCount: _items.length,
-                    itemBuilder: (context, index) {
-                      IconButton likeIconButton = IconButton(
-                        icon: (_items[index].likeIcon),
-                        iconSize: likeDislikeIconSize,
-                        onPressed: () {
-                          upVote(_items[index].id);
-                        },
-                      );
+              // Question List
+              Container(
+                child: Flexible(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      primary: true,
+                      itemCount: _items.length,
+                      itemBuilder: (context, index) {
+                        IconButton likeIconButton = IconButton(
+                          icon: (_items[index].likeIcon),
+                          iconSize: likeDislikeIconSize,
+                          onPressed: () {
+                            upVote(_items[index].id);
+                          },
+                        );
 
-                      IconButton dislikeIconButton = IconButton(
-                        icon: (_items[index].dislikeIcon),
-                        iconSize: likeDislikeIconSize,
-                        onPressed: () {
-                          downVote(_items[index].id);
-                        },
-                      );
+                        IconButton dislikeIconButton = IconButton(
+                          icon: (_items[index].dislikeIcon),
+                          iconSize: likeDislikeIconSize,
+                          onPressed: () {
+                            downVote(_items[index].id);
+                          },
+                        );
 
-                      return Card(
-                        color: cardBGcolor,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                  padding: EdgeInsets.fromLTRB(
-                                      15.0, 10.0, 10.0, 0.0),
-                                  child: Text(
-                                    '${_items[index].title}',
-                                    style: questionTextStyle,
-                                  )),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    ButtonBar(
-                                      children: <Widget>[
-                                        likeIconButton,
-                                        dislikeIconButton,
-                                      ],
-                                    ),
-                                  ],
+                        return Card(
+                          color: cardBGcolor,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                    padding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 10.0, 0.0),
+                                    child: Text(
+                                      '${_items[index].title}',
+                                      style: questionTextStyle,
+                                    )),
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      ButtonBar(
+                                        buttonPadding: EdgeInsets.all(0.0),
+                                        children: <Widget>[
+                                          likeIconButton,
+                                          dislikeIconButton,
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
               ),
+              // Submit button
               Container(
                 width: 110,
                 height: 40,
+                margin: EdgeInsets.all(20.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
@@ -292,9 +301,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              )
             ],
           ),
         ));
