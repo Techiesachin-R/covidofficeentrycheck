@@ -1,3 +1,3 @@
-# covid self assessment
+# Self Declaration
 
-Self assessment for users before going to any office/mall premises.
+Self Declaration for users before going to any office/mall premises.
