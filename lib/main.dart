@@ -1,6 +1,11 @@
+import 'dart:collection';
+
 import 'package:covidselfassessment/failure.dart';
 import 'package:covidselfassessment/success.dart';
 import 'package:flutter/material.dart';
+
+import 'failure.dart';
+import 'success.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,6 +20,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
       ),
       home: MyHomePage(title: 'OT Covid Self Assessment'),
+      routes: {
+        "/success": (_) => new Success(),
+        "/failed": (_) => new Failure(),
+      },
       // home: Failure()
     );
   }
@@ -30,15 +39,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List yesarray = <String>[];
-  List noarray = <String>[];
-  bool pressAttention = false;
-  bool hityes = false;
+  Set yesarray = new HashSet<String>();
+  Set noarray = new HashSet<String>();
+  bool isAllItemsFilled = false;
+
   List<Question> _items = [
-    Question(id: 1, title: 'I am not sick', upclick: false, downclick: false),
+    Question(
+        id: 1,
+        title: 'I do not have flu like symptoms',
+        upclick: false,
+        downclick: false),
     Question(
         id: 2,
-        title: 'I do not have flu like symptoms',
+        title: 'I do not have a temparature',
         upclick: false,
         downclick: false),
     Question(
@@ -48,117 +61,92 @@ class _MyHomePageState extends State<MyHomePage> {
         downclick: false),
     Question(
         id: 4,
-        title: 'I do not have high temparature',
+        title: 'I believe I am not sick and can enter the office',
         upclick: false,
         downclick: false),
-    Question(
-        id: 5, title: 'I have a face mask', upclick: false, downclick: false),
   ];
 
   void pressedyes(data) {
     if (this.noarray.contains(data.toString())) {
       this.noarray.remove(data.toString());
-      this.yesarray.add(data.toString());
-      setState(() {
-        if (_items[data - 1].downclick) {
-          _items[data - 1].downclick = false;
-        }
-        _items[data - 1].upclick = !_items[data - 1].upclick;
-      });
-      this.yesarray.toSet();
-    } else {
-      this.yesarray.add(data.toString());
-      setState(() {
-        if (_items[data - 1].downclick) {
-          _items[data - 1].downclick = false;
-        }
-        _items[data - 1].upclick = !_items[data - 1].upclick;
-      });
-      this.yesarray.toSet();
     }
-    print('yesarray:  + ${this.yesarray.toSet()}');
-    print('noarray:  + ${this.noarray.toSet()}');
-    print('id : ${_items[data].upclick}');
+    setState(() {
+      if (_items[data - 1].downclick) {
+        _items[data - 1].downclick = false;
+      }
+
+      if (!_items[data - 1].upclick) {
+        this.yesarray.add(data.toString());
+      } else {
+        this.yesarray.remove(data.toString());
+      }
+
+      _items[data - 1].upclick = !_items[data - 1].upclick;
+      if ((this.yesarray.length + this.noarray.length) == 5) {
+        isAllItemsFilled = true;
+      } else {
+        isAllItemsFilled = false;
+      }
+    });
+    // this.yesarray.toSet();
+
+    debugPrint('yesarray:  + ${this.yesarray}');
+    debugPrint('noarray:  + ${this.noarray}');
   }
 
   void pressedno(data) {
     if (this.yesarray.contains(data.toString())) {
       this.yesarray.remove(data.toString());
-      this.noarray.add(data.toString());
-      setState(() {
-        if (_items[data - 1].upclick) {
-          _items[data - 1].upclick = false;
-        }
-        _items[data - 1].downclick = !_items[data - 1].downclick;
-      });
-      this.noarray.toSet();
-    } else {
-      this.noarray.add(data.toString());
-      setState(() {
-        if (_items[data - 1].upclick) {
-          _items[data - 1].upclick = false;
-        }
-        _items[data - 1].downclick = !_items[data - 1].downclick;
-      });
-      this.noarray.toSet();
     }
-    print('yesarray:  + ${this.yesarray.toSet()}');
-    print('noarray:  + ${this.noarray.toSet()}');
-  }
+    setState(() {
+      if (_items[data - 1].upclick) {
+        _items[data - 1].upclick = false;
+      }
 
-  //Todo ENABLE SUBMIT BUTTON BASED ON CONDITION ALL FILLED
+      if (!_items[data - 1].downclick) {
+        this.noarray.add(data.toString());
+      } else {
+        this.noarray.remove(data.toString());
+      }
+
+      _items[data - 1].downclick = !_items[data - 1].downclick;
+      if ((this.yesarray.length + this.noarray.length) == 5) {
+        isAllItemsFilled = true;
+      } else {
+        isAllItemsFilled = false;
+      }
+    });
+
+    debugPrint('yesarray:  + ${this.yesarray}');
+    debugPrint('noarray:  + ${this.noarray}');
+  }
 
   void submit() {
-    if (this.yesarray.toSet().length == 5) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Success()),
-      );
+    if (this.yesarray.length + this.noarray.length < 5) {
+      debugPrint('Fill all the declaration items');
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Failure()),
-      );
+      if (this.yesarray.length == 5) {
+        Navigator.pushReplacementNamed(context, "/success");
+      } else {
+        Navigator.pushReplacementNamed(context, "/failed");
+      }
     }
-    //Todo empty arrays and object and refresh
-  }
-
-  Future<void> _showMyDialog(response) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Entry Status'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(response),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Okay'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          flexibleSpace: Image(
+            image: AssetImage('assets/appbar_bg.png'),
+            fit: BoxFit.cover,
+          ),
+          backgroundColor: Colors.transparent,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/logo.png',
+                'assets/logo_white.png',
                 fit: BoxFit.cover,
                 width: 120.0,
               ),
@@ -243,19 +231,28 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     }),
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(color: Colors.blue)),
-                elevation: 10,
-                color: Color(0xFF2E3D98),
-                onPressed: () {
-                  submit();
-                },
-                child: Text(
-                  'SUBMIT',
-                  style: TextStyle(
-                      fontSize: 20.0, color: Colors.white, letterSpacing: 2.0),
+              Container(
+                width: 110,
+                height: 40,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  elevation: 10,
+                  color:
+                      isAllItemsFilled ? Color(0xFF2E3D98) : Color(0xFF999999),
+                  onPressed: () {
+                    isAllItemsFilled ? submit() : null;
+                  },
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
+                        letterSpacing: 1.0),
+                  ),
                 ),
               ),
               SizedBox(

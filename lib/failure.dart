@@ -8,6 +8,8 @@ class Failure extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -27,10 +29,10 @@ class Failure extends StatelessWidget {
           children: <Widget>[
             Text(
               formatDate(DateTime.now(),
-                  [dd, '-', MM, '-', yyyy, ' ', hh, ':', nn, ':', ss, ' ', am]),
+                  [dd, 'th ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20.0, color: Colors.green, letterSpacing: 2.0),
+                  fontSize: 18.0, color: Color(0xFF757575), letterSpacing: 1.5),
             ),
             SizedBox(
               height: 40,
@@ -43,10 +45,13 @@ class Failure extends StatelessWidget {
               height: 30,
             ),
             Text(
-              'Please get well soon\nand then return to office.',
+              'Do not enter',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20.0, color: Color(0xFFDF3324), letterSpacing: 2.0),
+                  fontSize: 20.0,
+                  color: Color(0xFFDF3324),
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.bold),
             )
           ],
         )),

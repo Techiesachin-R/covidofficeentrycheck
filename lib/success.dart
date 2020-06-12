@@ -9,6 +9,8 @@ class Success extends StatelessWidget {
     return Scaffold(
       // appBar: AppBar(title: Text('opentext', style: TextStyle(fontSize: 30.0),),backgroundColor: Colors.white, elevation: 0.0, centerTitle: true),
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -28,10 +30,10 @@ class Success extends StatelessWidget {
           children: <Widget>[
             Text(
               formatDate(DateTime.now(),
-                  [dd, '-', MM, '-', yyyy, ' ', hh, ':', nn, ':', ss, ' ', am]),
+                  [dd, 'th ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20.0, color: Colors.green, letterSpacing: 2.0),
+                  fontSize: 18.0, color: Color(0xFF757575), letterSpacing: 1.5),
             ),
             SizedBox(
               height: 40,
@@ -44,10 +46,13 @@ class Success extends StatelessWidget {
               height: 30,
             ),
             Text(
-              'Thank you. \nYou may enter the office.',
+              'You may enter the office.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20.0, color: Color(0xFF338275), letterSpacing: 2.0),
+                  fontSize: 20.0,
+                  color: Color(0xFF338275),
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.bold),
             )
           ],
         )),
