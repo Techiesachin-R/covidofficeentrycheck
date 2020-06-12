@@ -14,8 +14,10 @@ class Failure extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/logo.png',
-              width: 120.0,
+              'assets/logo_black.png',
+              fit: BoxFit.scaleDown,
+              width: 135.0,
+              height: 50.0,
             ),
           ],
         ),
@@ -32,27 +34,31 @@ class Failure extends StatelessWidget {
                   [dd, 'th ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 18.0, color: Color(0xFF757575), letterSpacing: 1.5),
+                  fontSize: 16.0, color: Color(0xFF757575), letterSpacing: 1.2),
             ),
             SizedBox(
               height: 40,
             ),
             Image.asset(
-              'assets/failure.png',
-              width: 250.0,
+              'assets/noentry_ill.png',
+              width: 240.0,
+              fit: BoxFit.scaleDown,
             ),
             SizedBox(
               height: 30,
             ),
-            Text(
-              'Do not enter',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20.0,
-                  color: Color(0xFFDF3324),
-                  letterSpacing: 2.0,
-                  fontWeight: FontWeight.bold),
-            )
+            Wrap(direction: Axis.vertical, //Vertical || Horizontal
+                children: <Widget>[
+                  Text(
+                    'Do not Enter',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 28.0,
+                        color: Color(0xFFDF3324),
+                        letterSpacing: 1.5,
+                        fontWeight: FontWeight.bold),
+                  )
+                ]),
           ],
         )),
       ),

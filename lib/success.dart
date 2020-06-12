@@ -15,8 +15,10 @@ class Success extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/logo.png',
-              width: 120.0,
+              'assets/logo_black.png',
+              fit: BoxFit.scaleDown,
+              width: 135.0,
+              height: 50.0,
             ),
           ],
         ),
@@ -33,27 +35,31 @@ class Success extends StatelessWidget {
                   [dd, 'th ', M, ' ', yyyy, ' ', hh, ':', nn, ' ', am]),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 18.0, color: Color(0xFF757575), letterSpacing: 1.5),
+                  fontSize: 16.0, color: Color(0xFF757575), letterSpacing: 1.2),
             ),
             SizedBox(
               height: 40,
             ),
             Image.asset(
               'assets/success.png',
-              width: 250.0,
+              fit: BoxFit.scaleDown,
+              width: 240.0,
             ),
             SizedBox(
               height: 30,
             ),
-            Text(
-              'You may enter the office.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20.0,
-                  color: Color(0xFF338275),
-                  letterSpacing: 2.0,
-                  fontWeight: FontWeight.bold),
-            )
+            Wrap(direction: Axis.vertical, //Vertical || Horizontal
+                children: <Widget>[
+                  Text(
+                    'You may enter the \noffice.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 28.0,
+                        color: Color(0xFF338275),
+                        letterSpacing: 1.5,
+                        fontWeight: FontWeight.bold),
+                  )
+                ]),
           ],
         )),
       ),

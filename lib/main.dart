@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         //primaryColor: const Color(0xFF2E3D98),
         primarySwatch: Colors.lightBlue,
       ),
-      home: MyHomePage(title: 'OT Covid Self Assessment'),
+      home: MyHomePage(title: 'Covid Self Declaration'),
       routes: {
         "/success": (_) => new Success(),
         "/failed": (_) => new Failure(),
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
 
       _items[data - 1].upclick = !_items[data - 1].upclick;
-      if ((this.yesarray.length + this.noarray.length) == 5) {
+      if ((this.yesarray.length + this.noarray.length) == _items.length) {
         isAllItemsFilled = true;
       } else {
         isAllItemsFilled = false;
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
 
       _items[data - 1].downclick = !_items[data - 1].downclick;
-      if ((this.yesarray.length + this.noarray.length) == 5) {
+      if ((this.yesarray.length + this.noarray.length) == _items.length) {
         isAllItemsFilled = true;
       } else {
         isAllItemsFilled = false;
@@ -122,10 +122,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void submit() {
-    if (this.yesarray.length + this.noarray.length < 5) {
+    if (this.yesarray.length + this.noarray.length < _items.length) {
       debugPrint('Fill all the declaration items');
     } else {
-      if (this.yesarray.length == 5) {
+      if (this.yesarray.length == _items.length) {
         Navigator.pushReplacementNamed(context, "/success");
       } else {
         Navigator.pushReplacementNamed(context, "/failed");
@@ -147,8 +147,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Image.asset(
                 'assets/logo_white.png',
-                fit: BoxFit.cover,
-                width: 120.0,
+                fit: BoxFit.scaleDown,
+                width: 135.0,
+                height: 50.0,
               ),
             ],
           ),
@@ -165,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text(
                   "Self-declaration",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
               ),
               new Expanded(
@@ -183,11 +184,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                  padding:
-                                      EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                  padding: EdgeInsets.fromLTRB(
+                                      15.0, 10.0, 10.0, 0.0),
                                   child: Text(
                                     '${_items[index].title}',
-                                    style: TextStyle(fontSize: 18.0),
+                                    style: TextStyle(fontSize: 15.0),
                                   )),
                               Container(
                                 child: Row(
@@ -200,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           icon: Icon(
                                             Icons.thumb_up,
                                           ),
-                                          iconSize: 20,
+                                          iconSize: 18,
                                           color: _items[index].upclick
                                               ? Color(0xFF2E3D98)
                                               : Colors.grey,
@@ -212,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           icon: Icon(
                                             Icons.thumb_down,
                                           ),
-                                          iconSize: 20,
+                                          iconSize: 18,
                                           color: _items[index].downclick
                                               ? Color(0xFFDF3324)
                                               : Colors.grey,
