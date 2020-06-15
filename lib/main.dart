@@ -44,11 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Set noarray = new HashSet<int>();
   bool isAllItemsFilled = false;
 
-  // Static images
-  static Image likeIconUnselected = Image.asset('assets/like.png');
-  static Image likeIconSelected = Image.asset('assets/like_selected.png');
-  static Image dislikeIconUnselected = Image.asset('assets/dislike.png');
-  static Image dislikeIconSelected = Image.asset('assets/dislike_selected.png');
+  Color unselectedYesBGColor = Color(0xFFECF1FA);
+  Color selectedYesBGColor = Color(0xFF2E3D98);
+  Color unselectedNoBGColor = Color(0xFFFCEBEA);
+  Color selectedNoBGColor = Color(0xFFDF3324);
+
+  Color unselectedYesBtnColor = Color(0xFF2E3D98);
+  Color unselectedNoBtnColor = Color(0xFFDF3324);
+  Color selectedBtnColor = Color(0xFFFFFFFF);
 
   AssetImage appbarBG = AssetImage('assets/appbar_bg.png');
   Image appbarLogo = Image.asset(
@@ -57,11 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
     width: 130.0,
     height: 50.0,
   );
-
-  // Default image assignment
-  Image likeIcon = likeIconUnselected;
-  Image dislikeIcon = dislikeIconUnselected;
-
 
   @override
   void initState() {
@@ -80,7 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (this.noarray.contains(index)) {
         this.noarray.remove(index);
-        _items[index].dislikeIcon = dislikeIconUnselected;
       }
 
       if (_items[index].downclick) {
@@ -89,10 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (!_items[index].upclick) {
         this.yesarray.add(index);
-        _items[index].likeIcon = likeIconSelected;
       } else {
         this.yesarray.remove(index);
-        _items[index].likeIcon = likeIconUnselected;
       }
 
       _items[index].upclick = !_items[index].upclick;
@@ -116,7 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (this.yesarray.contains(index)) {
         this.yesarray.remove(index);
-        _items[index].likeIcon = likeIconUnselected;
       }
 
       if (_items[index].upclick) {
@@ -125,10 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (!_items[index].downclick) {
         this.noarray.add(index);
-        _items[index].dislikeIcon = dislikeIconSelected;
       } else {
         this.noarray.remove(index);
-        _items[index].dislikeIcon = dislikeIconUnselected;
       }
 
       _items[index].downclick = !_items[index].downclick;
@@ -166,15 +158,14 @@ class _MyHomePageState extends State<MyHomePage> {
     final String submitText = "Submit";
 
     // Colors
-    final Color cardBGcolor = Color(0xFFF3F6FB);
-    final Color bodyBGcolor = Color(0xFFFFFFFF);
+    final Color cardBGcolor = Color(0xFFFFFFFF);
+    final Color bodyBGcolor = Color(0xFFF3F6FB);
     final Color submitTextColor = Color(0xFFFFFFFF);
     final Color submitDisabledBGcolor = Color(0xFF999999);
     final Color submitEnabledBGcolor = Color(0xFF2E3D98);
 
     // Font Size
     final double submitTextFontSize = 16.0;
-    final double likeDislikeIconSize = 18.0;
 
     // TextStyles
     final TextStyle questionTextStyle = TextStyle(fontSize: 15.0);
@@ -203,7 +194,6 @@ class _MyHomePageState extends State<MyHomePage> {
           color: bodyBGcolor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            // mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               // Declaration Heading
@@ -224,20 +214,44 @@ class _MyHomePageState extends State<MyHomePage> {
                       primary: true,
                       itemCount: _items.length,
                       itemBuilder: (context, index) {
-                        IconButton likeIconButton = IconButton(
-                          icon: (_items[index].likeIcon),
-                          iconSize: likeDislikeIconSize,
+                        var qBtnShape = RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        );
+                        RaisedButton yesBtn = RaisedButton(
+                          shape: qBtnShape,
                           onPressed: () {
                             upVote(_items[index].id);
                           },
+                          color: _items[index].upclick
+                              ? selectedYesBGColor
+                              : unselectedYesBGColor,
+                          child: Text(
+                            'Yes',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: _items[index].upclick
+                                    ? selectedBtnColor
+                                    : unselectedYesBtnColor),
+                          ),
                         );
-
-                        IconButton dislikeIconButton = IconButton(
-                          icon: (_items[index].dislikeIcon),
-                          iconSize: likeDislikeIconSize,
+                        RaisedButton noBtn = RaisedButton(
+                          shape: qBtnShape,
                           onPressed: () {
                             downVote(_items[index].id);
                           },
+                          color: _items[index].downclick
+                              ? selectedNoBGColor
+                              : unselectedNoBGColor,
+                          child: Text(
+                            'No',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: _items[index].downclick
+                                    ? selectedBtnColor
+                                    : unselectedNoBtnColor),
+                          ),
                         );
 
                         return Card(
@@ -246,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             alignment: Alignment.center,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Container(
                                     padding: EdgeInsets.fromLTRB(
@@ -257,14 +271,25 @@ class _MyHomePageState extends State<MyHomePage> {
                                     )),
                                 Container(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       ButtonBar(
-                                        buttonPadding: EdgeInsets.all(0.0),
+                                        buttonPadding: EdgeInsets.all(5.0),
                                         children: <Widget>[
-                                          likeIconButton,
-                                          dislikeIconButton,
+                                          Container(
+                                            width: 70,
+                                            height: 32,
+                                            margin: EdgeInsets.all(12.0),
+                                            child: yesBtn,
+                                          ),
+                                          Container(
+                                            width: 70,
+                                            height: 32,
+                                            margin: EdgeInsets.all(12.0),
+                                            child: noBtn,
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -286,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  elevation: 10,
+                  elevation: 5,
                   color: isAllItemsFilled
                       ? submitEnabledBGcolor
                       : submitDisabledBGcolor,
@@ -307,11 +332,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
- void dispose(){
-  // Additional disposal code
-  _items.clear();
-  super.dispose();
- }
+  void dispose() {
+    // Additional disposal code
+    _items.clear();
+    super.dispose();
+  }
 }
 
 // Question class
@@ -320,8 +345,6 @@ class Question {
   String title;
   bool upclick;
   bool downclick;
-  Image likeIcon;
-  Image dislikeIcon;
 
   // Question Constuctor with two arguments
   Question(int id, String title) {
@@ -329,7 +352,5 @@ class Question {
     this.title = title;
     this.upclick = false;
     this.downclick = false;
-    this.likeIcon = Image.asset('assets/like.png');
-    this.dislikeIcon = Image.asset('assets/dislike.png');
   }
 }
