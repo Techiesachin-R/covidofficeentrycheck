@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // Strings
-    final String declarationHeading = "Self-declaration";
+    final String declarationHeading = "Self Declaration";
     final String submitText = "Submit";
 
     // Colors

@@ -1,4 +1,4 @@
-package info.pillisureshraju.covidselfassessment
+package com.opentext.selfdeclaration
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
