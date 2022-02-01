@@ -7,7 +7,6 @@ class Success extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text('opentext', style: TextStyle(fontSize: 30.0),),backgroundColor: Colors.white, elevation: 0.0, centerTitle: true),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,

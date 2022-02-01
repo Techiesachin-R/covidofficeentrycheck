@@ -34,11 +34,11 @@ class _MyHomePageState extends State<MyHomePage> {
   // List of questions
   List<String> questions = [
     'I do not have flu like symptoms',
-    'I do not have a temparature',
+    'I do not have a temperature',
     'I have not been exposed to COVID-19',
     'I believe I am not sick and can enter the office'
   ];
-  List<Question> _items = new List<Question>();
+  List<Question> _items = <Question>[];
 
   Set yesarray = new HashSet<int>();
   Set noarray = new HashSet<int>();
@@ -214,17 +214,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       primary: true,
                       itemCount: _items.length,
                       itemBuilder: (context, index) {
-                        var qBtnShape = RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        );
-                        RaisedButton yesBtn = RaisedButton(
-                          shape: qBtnShape,
+                        ElevatedButton yesBtn = ElevatedButton(
                           onPressed: () {
                             upVote(_items[index].id);
                           },
-                          color: _items[index].upclick
-                              ? selectedYesBGColor
-                              : unselectedYesBGColor,
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                              )),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  _items[index].upclick
+                                      ? selectedYesBGColor
+                                      : unselectedYesBGColor)),
                           child: Text(
                             'Yes',
                             style: TextStyle(
@@ -235,14 +238,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                     : unselectedYesBtnColor),
                           ),
                         );
-                        RaisedButton noBtn = RaisedButton(
-                          shape: qBtnShape,
+                        ElevatedButton noBtn = ElevatedButton(
                           onPressed: () {
                             downVote(_items[index].id);
                           },
-                          color: _items[index].downclick
-                              ? selectedNoBGColor
-                              : unselectedNoBGColor,
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                              )),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  _items[index].downclick
+                                      ? selectedNoBGColor
+                                      : unselectedNoBGColor)),
                           child: Text(
                             'No',
                             style: TextStyle(
@@ -307,14 +316,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 110,
                 height: 40,
                 margin: EdgeInsets.all(20.0),
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  elevation: 5,
-                  color: isAllItemsFilled
-                      ? submitEnabledBGcolor
-                      : submitDisabledBGcolor,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      )),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          isAllItemsFilled
+                              ? submitEnabledBGcolor
+                              : submitDisabledBGcolor)),
                   onPressed: () {
                     if (isAllItemsFilled) {
                       submit();
@@ -346,7 +357,7 @@ class Question {
   bool upclick;
   bool downclick;
 
-  // Question Constuctor with two arguments
+  // Question Constructor with two arguments
   Question(int id, String title) {
     this.id = id;
     this.title = title;
