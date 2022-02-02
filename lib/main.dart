@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:covidselfassessment/failure.dart';
 import 'package:covidselfassessment/success.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_html_css/simple_html_css.dart';
 
 import 'failure.dart';
 import 'success.dart';
@@ -33,10 +34,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // List of questions
   List<String> questions = [
-    'I do not have flu like symptoms',
-    'I do not have a temperature',
-    'I have not been exposed to COVID-19',
-    'I believe I am not sick and can enter the office'
+    'I <b>do not</b> have flu like symptoms',
+    'I <b>do not</b> have a temperature',
+    'I <b>have not</b> been exposed to COVID-19',
+    'I believe I am <b>not</b> sick and can enter the office'
   ];
   List<Question> _items = <Question>[];
 
@@ -274,9 +275,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Container(
                                     padding: EdgeInsets.fromLTRB(
                                         10.0, 10.0, 10.0, 0.0),
-                                    child: Text(
-                                      '${_items[index].title}',
-                                      style: questionTextStyle,
+                                    child: RichText(
+                                      text: HTML.toTextSpan(
+                                          context, '${_items[index].title}',
+                                          defaultTextStyle: questionTextStyle),
                                     )),
                                 Container(
                                   child: Row(
